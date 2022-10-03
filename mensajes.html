@@ -18,13 +18,15 @@
 
 </head>
 
-<body onload="traerDatosMensajes()">
+<body onload="traerDatosMensaje()">
     <h1>Hotel De Luxe</h1>
     <table id="resultado"></table>
     <h3>Guardar mensaje</h3>
     <input type="number" id="idMensaje" placeholder="Id mensaje">
     <input type="text" id="messageText" placeholder="Mensaje"><br><br>
-    <button onclick="">Guardar</button>
+    <button onclick="guardarMensaje()">Guardar</button>
+    <button onclick="actualizarMensaje()">Actualizar</button>
+    <button onclick="borrarMensaje()">Borrar</button><br><br>
     <br><br>
     <button onclick="location.href='index.html'">Regresar</button>
 </body>

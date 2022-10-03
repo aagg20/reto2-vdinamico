@@ -64,7 +64,6 @@ function mostrarDetalles() {
             alert("Peticion Erronea");
         }
     })
-
 }
 
 function pintarDatosGral(datos, clnMostrar, tipo) {
@@ -84,8 +83,6 @@ function pintarDatosGral(datos, clnMostrar, tipo) {
     $("#resultado").empty();
     $("#resultado").append(htmlParaInsertar);
 }
-
-
 
 function pintarDatosDetalles(datos) {
     let htmlParaInsertar = "";
@@ -195,7 +192,7 @@ function actualizarHabitacion() {
     });
 }
 
-function guardarCliente() {
+function actualizarCliente() {
     let datosAEnviar = {
         "id": $("#idCliente").val(),
         "room": $("#nameCliente").val(),
@@ -246,6 +243,57 @@ function borrarHabitacion() {
     $.ajax({
         url: urlApi + "room/room",
         type: "DELETE",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(idABorrar),
+        success: function (respuesta) {
+            alert("La Habitacion ha sido borrada");
+            traerDatosHabitacion();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion incorrecta");
+        }
 
-    })
+    });
+}
+
+function borrarCliente() {
+    let idABorrar = {
+        "id": $("#idCliente").val()
+    };
+    $.ajax({
+        url: urlApi + "cliente/cliente",
+        type: "DELETE",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(idABorrar),
+        success: function (respuesta) {
+            alert("El cliente ha sido borrado");
+            traerDatosCliente();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion incorrecta");
+        }
+
+    });
+}
+
+function borrarMensaje() {
+    let idABorrar = {
+        "id": $("#idMensaje").val()
+    };
+    $.ajax({
+        url: urlApi + "mensaje/mensaje",
+        type: "DELETE",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(idABorrar),
+        success: function (respuesta) {
+            alert("LEl mensaje ha sido borrado");
+            traerDatosMensaje();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion incorrecta");
+        }
+    });
 }

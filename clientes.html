@@ -21,13 +21,15 @@
 <body onload="traerDatosCliente()">
     <h1>Hotel De Luxe</h1>
     <table id="resultado"></table>
-    
+
     <h3>Guardar cliente</h3>
     <input type="number" id="idCliente" placeholder="Id Cliente">
     <input type="text" id="nameCliente" placeholder="Nombre cliente">
     <input type="email" id="emailCliente" placeholder="Email cliente">
     <input type="number" id="ageCliente" placeholder="Edad cliente"><br><br>
-    <button onclick="">Guardar</button><br><br>
+    <button onclick="guardarCliente()">Guardar</button>
+    <button onclick="actualizarCliente()">Actualizar</button>
+    <button onclick="borrarCliente()">Borrar</button><br><br>
 
     <button onclick="location.href='index.html'">Regresar</button>
 </body>
