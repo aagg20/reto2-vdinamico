@@ -1,6 +1,6 @@
 const urlApi = "https://g02ae6c99368ff0-room.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/";
 
-function traerDatosHotel() {
+function traerDatosHabitacion() {
     $.ajax({
         url: urlApi + "room/room",
         type: 'GET',
@@ -28,7 +28,7 @@ function traerDatosCliente() {
     })
 
 }
-function traerDatosMensajes() {
+function traerDatosMensaje() {
     $.ajax({
         url: urlApi + "message/message",
         type: 'GET',
@@ -54,7 +54,7 @@ function mostrarDetalles() {
     let tipo = sessionStorage.getItem('tipo');
 
     $.ajax({
-        url: urlApi +tipo+'/'+tipo+'/'+id,
+        url: urlApi + tipo + '/' + tipo + '/' + id,
         type: 'GET',
         dataType: 'json',
         success: function (respuesta) {
@@ -103,4 +103,149 @@ function pintarDatosDetalles(datos) {
     $("#resultado").append(htmlParaInsertar);
 }
 
+function guardarHabitacion() {
+    let datosAEnviar = {
+        "id": $("#idRoom").val(),
+        "room": $("#nameRoom").val(),
+        "stars": $("#stars").val(),
+        "category_id": $("#category_id").val(),
+        "description": $("#description").val()
+    };
+    $.ajax({
+        url: urlApi + "room/room",
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("La habitacion ha sido agregada con exito!");
+            traerDatosHabitacion();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
 
+function guardarCliente() {
+    let datosAEnviar = {
+        "id": $("#idCliente").val(),
+        "room": $("#nameCliente").val(),
+        "email": $("#emailCliente").val(),
+        "age": $("#ageCliente").val()
+    };
+    $.ajax({
+        url: urlApi + "cliente/cliente",
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("El cliente ha sido agregada con exito!");
+            traerDatosCliente();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
+
+function guardarMensaje() {
+    let datosAEnviar = {
+        "id": $("#idMensaje").val(),
+        "room": $("#messageText").val()
+    };
+    $.ajax({
+        url: urlApi + "room/room",
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("El mensaje ha sido agregado con exito!");
+            traerDatosMensaje();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
+
+function actualizarHabitacion() {
+    let datosAEnviar = {
+        "id": $("#idRoom").val(),
+        "room": $("#nameRoom").val(),
+        "stars": $("#stars").val(),
+        "category_id": $("#category_id").val(),
+        "description": $("#description").val(),
+    };
+    $.ajax({
+        url: urlApi + "room/room",
+        type: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("La habitacion ha sido actualizada con exito!");
+            traerDatosHabitaciones();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
+
+function guardarCliente() {
+    let datosAEnviar = {
+        "id": $("#idCliente").val(),
+        "room": $("#nameCliente").val(),
+        "email": $("#emailCliente").val(),
+        "age": $("#ageCliente").val()
+    };
+    $.ajax({
+        url: urlApi + "cliente/cliente",
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("El cliente ha sido actualizado con exito!");
+            traerDatosCliente();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
+
+function actualizarMensaje() {
+    let datosAEnviar = {
+        "id": $("#idMensaje").val(),
+        "room": $("#messageText").val()
+    };
+    $.ajax({
+        url: urlApi + "room/room",
+        type: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(datosAEnviar),
+        success: function (respuesta) {
+            alert("El mensaje ha sido actualizado con exito!");
+            traerDatosMensaje();
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion erronea");
+        }
+    });
+}
+
+function borrarHabitacion() {
+    let idABorrar = {
+        "id": $("#idRoom").val()
+    };
+    $.ajax({
+        url: urlApi + "room/room",
+        type: "DELETE",
+
+    })
+}
