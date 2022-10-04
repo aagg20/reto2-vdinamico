@@ -6,7 +6,7 @@ function traerDatosHabitacion() {
         type: 'GET',
         dataType: "json",
         success: function (respuesta) {
-            pintarDatosGral(respuesta.items, "name", "room");
+            pintarDatosGral(respuesta.items, "id", "room");
         },
         error: function (respuesta, xhr) {
             alert("Error de peticion");
@@ -20,12 +20,12 @@ function traerDatosCliente() {
         type: 'GET',
         dataType: "json",
         success: function (respuesta) {
-            pintarDatosGral(respuesta.items, "name", "client");
+            pintarDatosGral(respuesta.items, "id", "client");
         },
-        error: function (respuesta, xhr) {
-            alert("Error de peticion");
+        error: function (respuesta) {
+            alert("Error de peticion Cliente");
         }
-    })
+    });
 
 }
 function traerDatosMensaje() {
@@ -34,7 +34,7 @@ function traerDatosMensaje() {
         type: 'GET',
         dataType: "json",
         success: function (respuesta) {
-            pintarDatosGral(respuesta.items, "messageText", "message");
+            pintarDatosGral(respuesta.items, "messagetext", "message");
         },
         error: function (respuesta, xhr) {
             alert("Error de peticion");
@@ -54,23 +54,59 @@ function mostrarDetalles() {
     let tipo = sessionStorage.getItem('tipo');
 
     $.ajax({
+        // eso es igual al url + client(tipo) /client(tipo o lo mismo para room y messages)
         url: urlApi + tipo + '/' + tipo + '/' + id,
         type: 'GET',
-        dataType: 'json',
+        datatype: 'JSON',
         success: function (respuesta) {
+            console.log(respuesta);
             pintarDatosDetalles(respuesta.items);
         },
         error: function (respuesta, xhr) {
             alert("Peticion Erronea");
         }
-    })
+    });
 }
+
+function mostrarDetallesClientes() {
+    let id = sessionStorage.getItem('id');
+    let tipo = sessionStorage.getItem('tipo');
+
+    $.ajax({
+        // eso es igual al url + client(tipo) /client(tipo o lo mismo para room y messages)
+        url: "https://g02ae6c99368ff0-room.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/client/client",
+        type: 'GET',
+        datatype: 'JSON',
+        success: function (respuesta) {
+            console.log(respuesta);
+            pintarInformacionCliente(respuesta.items);
+        },
+        error: function (respuesta, xhr) {
+            alert("Peticion Erronea 123");
+        }
+    });
+}
+
+function pintarInformacionCliente(items) {
+    let myTable = "<table>";
+    for (i = 0; i < items.length; i++) {
+        myTable += "<tr>";
+        myTable += "<td>" + items[i].id + "</td>";
+        myTable += "<td>" + items[i].name + "</td>";
+        myTable += "<td>" + items[i].email + "</td>";
+        myTable += "<td>" + items[i].age + "</td>";
+
+    }
+    myTable += "</table>";
+    $("#resultado").append(myTable);
+}
+
 
 function pintarDatosGral(datos, clnMostrar, tipo) {
     let tipoTabla = tipo;
     let htmlParaInsertar = "";
     htmlParaInsertar += "<tr>";
-    htmlParaInsertar += "<th>Titulo</th>";
+    htmlParaInsertar += "<th>ID</th>";
     htmlParaInsertar += "</tr>";
 
     for (let index = 0; index < datos.length; index++) {
@@ -98,8 +134,11 @@ function pintarDatosDetalles(datos) {
 
     $("#resultado").empty();
     $("#resultado").append(htmlParaInsertar);
+
 }
 
+
+//************************************** */
 function guardarHabitacion() {
     let datosAEnviar = {
         "id": $("#idRoom").val(),
@@ -111,7 +150,6 @@ function guardarHabitacion() {
     $.ajax({
         url: urlApi + "room/room",
         type: 'POST',
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(datosAEnviar),
         success: function (respuesta) {
@@ -127,16 +165,18 @@ function guardarHabitacion() {
 function guardarCliente() {
     let datosAEnviar = {
         "id": $("#idCliente").val(),
-        "room": $("#nameCliente").val(),
+        "name": $("#nameCliente").val(),
         "email": $("#emailCliente").val(),
         "age": $("#ageCliente").val()
     };
     $.ajax({
-        url: urlApi + "cliente/cliente",
+        url: urlApi + "client/client",
         type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(datosAEnviar),
+
+        //contentType: 'application/json',
+        //data: JSON.stringify(datosAEnviar),
+        data: datosAEnviar,
+        dataType: 'JSON',
         success: function (respuesta) {
             alert("El cliente ha sido agregada con exito!");
             traerDatosCliente();
@@ -150,10 +190,10 @@ function guardarCliente() {
 function guardarMensaje() {
     let datosAEnviar = {
         "id": $("#idMensaje").val(),
-        "room": $("#messageText").val()
+        "messageText": $("#messageText").val()
     };
     $.ajax({
-        url: urlApi + "room/room",
+        url: urlApi + "message/message",
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -179,7 +219,6 @@ function actualizarHabitacion() {
     $.ajax({
         url: urlApi + "room/room",
         type: 'PUT',
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(datosAEnviar),
         success: function (respuesta) {
@@ -200,9 +239,8 @@ function actualizarCliente() {
         "age": $("#ageCliente").val()
     };
     $.ajax({
-        url: urlApi + "cliente/cliente",
-        type: 'POST',
-        dataType: 'json',
+        url: urlApi + "client/client",
+        type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(datosAEnviar),
         success: function (respuesta) {
@@ -221,9 +259,8 @@ function actualizarMensaje() {
         "room": $("#messageText").val()
     };
     $.ajax({
-        url: urlApi + "room/room",
+        url: urlApi + "message/message",
         type: 'PUT',
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(datosAEnviar),
         success: function (respuesta) {
@@ -243,7 +280,6 @@ function borrarHabitacion() {
     $.ajax({
         url: urlApi + "room/room",
         type: "DELETE",
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(idABorrar),
         success: function (respuesta) {
@@ -262,9 +298,8 @@ function borrarCliente() {
         "id": $("#idCliente").val()
     };
     $.ajax({
-        url: urlApi + "cliente/cliente",
+        url: urlApi + "client/client",
         type: "DELETE",
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(idABorrar),
         success: function (respuesta) {
@@ -283,13 +318,12 @@ function borrarMensaje() {
         "id": $("#idMensaje").val()
     };
     $.ajax({
-        url: urlApi + "mensaje/mensaje",
+        url: urlApi + "message/message",
         type: "DELETE",
-        dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(idABorrar),
         success: function (respuesta) {
-            alert("LEl mensaje ha sido borrado");
+            alert("El mensaje ha sido borrado");
             traerDatosMensaje();
         },
         error: function (respuesta, xhr) {
